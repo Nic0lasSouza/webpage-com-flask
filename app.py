@@ -6,11 +6,11 @@ class Jogo:
         self.nome = nome
         self.categoria = categoria
         self.console = console
-        self.preco = preco
+        #self.preco = preco
 
-jogo1 = Jogo('Tetris', 'Puzzle', 'Atari', 8.99)
-jogo2 = Jogo('God of War', 'Rack n slash', 'PS2', 29.99)
-jogo3 = Jogo('Mortal Kombat', 'Luta', 'PS2', 12.99)
+jogo1 = Jogo('Tetris', 'Puzzle', 'Atari')
+jogo2 = Jogo('God of War', 'Rack n slash', 'PS2')
+jogo3 = Jogo('Mortal Kombat', 'Luta', 'PS2')
 lista_jogo = [jogo1, jogo2, jogo3]
 
 
@@ -48,8 +48,8 @@ def criar():
     nome = request.form['nome']
     categoria = request.form['categoria']
     console = request.form['console']
-    preco = request.form['preco']
-    jogo = Jogo(nome, categoria, console, preco)
+    #preco = request.form['preco']
+    jogo = Jogo(nome, categoria, console)
     lista_jogo.append(jogo)
     return redirect(url_for('index'))
 
@@ -63,8 +63,8 @@ def autenticar():
     if request.form['usuario'] in usuarios:
         usuario = usuarios[request.form['usuario']]
         if request.form['senha'] == usuario.senha:
-            session['usuario_logado'] = usuario.nick
-            flash(usuario.nick + ' '+ '  logado com sucesso')
+            session['usuario_logado'] = usuario.nome
+            flash(usuario.nome + ' '+ '  logado com sucesso')
             proxima_pagina = request.form['proxima']
             return redirect(proxima_pagina)
 
