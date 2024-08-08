@@ -1,4 +1,5 @@
 #IMPORTANDO A BIBLIOTECA MYSQL CONNECTOR
+
 import mysql.connector
 from mysql.connector import errorcode
 
