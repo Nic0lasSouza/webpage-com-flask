@@ -2,38 +2,10 @@
 #PARA INICIAR O AMBIENTE VIRTUAL.venv\Scripts\activate 
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
-class Jogo:
-    def __init__(self, nome, categoria, console, preco):
-        self.nome = nome
-        self.categoria = categoria
-        self.console = console
-        #self.preco = preco
-
-jogo1 = Jogo('Tetris', 'Puzzle', 'Atari')
-jogo2 = Jogo('God of War', 'Rack n slash', 'PS2')
-jogo3 = Jogo('Mortal Kombat', 'Luta', 'PS2')
-lista_jogo = [jogo1, jogo2, jogo3]
-
-
-class Usuario:
-    def __init__(self, nome, nickname, senha):
-        self.nome = nome
-        self.nick = nickname
-        self.senha = senha
-
-usuario1 = Usuario("admin", "adm", "admin")
-usuario2 = Usuario("nicolas", "ns", "nicolas")
-usuario3 = Usuario("silvio", "ss", "silvio")
-
-usuarios = {
-    usuario1.nick : usuario1,
-    usuario2.nick : usuario2,
-    usuario3.nick : usuario3,
-    }
 app = Flask(__name__)
 app.secret_key = '123456'
 
-app.config('SQLALCHEMY_DATABASE_URI') = \
+app.config['SQLALCHEMY_DATABASE_URI'] = \
     '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGBD='mysql+mysqlconnector',
         usuario='root',
@@ -43,7 +15,6 @@ app.config('SQLALCHEMY_DATABASE_URI') = \
     )
 
 db = SQLAlchemy(app)
-
 class Jogos(db.Model):
     id=db.Column(db.Integer, primary_key=True,autoincrement=True)
     nome= db.Column(db.String(50), nullable=False)
@@ -52,7 +23,7 @@ class Jogos(db.Model):
 
     #CRIANDO FUNCAO DE INICIACAO
     def __repr__(self):
-        return '<Name %r>'% self.name
+        return '<Name %r>'% self.nome
     
 class Usuarios(db.Model):
     nickname=db.Column(db.String(8), primary_key=True,)
@@ -61,12 +32,14 @@ class Usuarios(db.Model):
 
     #CRIANDO FUNCAO DE INICIACAO
     def __repr__(self):
-        return '<Name %r>'% self.name
+        return '<Name %r>'% self.nome
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', titulo = 'Jogos', jogos = lista_jogo)
+    #PEGAR OS JOGOS E FAZER UMA QUERY, ORDENAR A LISTA PELO ID
+    lista = Jogos.query.order_by(Jogos.id)
+    return render_template('index.html', titulo = 'Jogos', jogos = lista)
 
 @app.route('/new')
 def new():
@@ -81,8 +54,20 @@ def criar():
     categoria = request.form['categoria']
     console = request.form['console']
     #preco = request.form['preco']
-    jogo = Jogo(nome, categoria, console)
-    lista_jogo.append(jogo)
+    
+    jogo = Jogos.query.filter_by(nome=nome).first()
+    #ANALISAR SE OJA POSSUI O JOGO NA LISTA
+    if jogo:
+        flash('Jogo já existe na lista')
+        return redirect(url_for('index'))
+    else:
+        #INCLUSÃO DE NOVO JOGO
+        novo_jogo = Jogos(nome=nome, categoria=categoria, console=console)
+        #INCLUIR ELE NO BANCO DE DADOS
+        db.session.add(novo_jogo)
+        #COMITANDO O JOGO NO BANCO DE DADOS
+        db.session.commit()
+
     return redirect(url_for('index'))
 
 @app.route('/login')
@@ -92,8 +77,9 @@ def login():
 
 @app.route('/autenticar', methods=['POST',])
 def autenticar():
-    if request.form['usuario'] in usuarios:
-        usuario = usuarios[request.form['usuario']]
+    #AQUI VAI CONFERIR SE O USUARIO QUE VAI SE LOGAR CONSTA NO BANCO
+    usuario = Usuarios.query.filter_by(nickname=request.form['usuario']).first()
+    if usuario:
         if request.form['senha'] == usuario.senha:
             session['usuario_logado'] = usuario.nome
             flash(usuario.nome + ' '+ '  logado com sucesso')

@@ -1,0 +1,28 @@
+
+class Jogo:
+    def __init__(self, nome, categoria, console):
+        self.nome = nome
+        self.categoria = categoria
+        self.console = console
+
+jogo1 = Jogo('Tetris', 'Puzzle', 'Atari')
+jogo2 = Jogo('God of War', 'Rack n slash', 'PS2')
+jogo3 = Jogo('Mortal Kombat', 'Luta', 'PS2')
+lista_jogo = [jogo1, jogo2, jogo3]
+
+
+class Usuario:
+    def __init__(self, nome, nickname, senha):
+        self.nome = nome
+        self.nick = nickname
+        self.senha = senha
+
+usuario1 = Usuario("admin", "adm", "admin")
+usuario2 = Usuario("nicolas", "ns", "nicolas")
+usuario3 = Usuario("silvio", "ss", "silvio")
+
+usuarios = {
+    usuario1.nick : usuario1,
+    usuario2.nick : usuario2,
+    usuario3.nick : usuario3,
+    }
