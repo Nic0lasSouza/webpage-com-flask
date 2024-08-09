@@ -36,21 +36,21 @@ TABLES = {}
 
 #DEFINE A TABELA JOGOS COM COLUNAS ID,NOME,CATEGORIA,CONSOLE E O ID AUTO INCREMENTAVEL
 TABLES['jogos']=('''
-    CREATE TABLE jogos(
-        id int(11) NOT NULL AUTO_INCREMENT,
-        nome varchar(50) NOT NULL,
-        categoria varchar(40) NOT NULL,
-        console varchar(20) NOT NULL,
-        PRIMARY KEY (id)           
+    CREATE TABLE `jogos`(
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `nome` varchar(50) NOT NULL,
+        `categoria` varchar(40) NOT NULL,
+        `console` varchar(20) NOT NULL,
+        PRIMARY KEY (`id`)           
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;''')
 
 #DEFINE A TABELA USUARIOS NOME, NICKNAME E SENHA SENDO O NICKNAME A CHAVE PRIMARIA
 TABLES['usuarios']=('''
-    CREATE TABLE usuarios(
-        nome varchar(20) NOT NULL,
-        nickname varchar(8) NOT NULL,
-        senha varchar(100) NOT NULl,
-        PRIMARY KEY (nickname)
+    CREATE TABLE `usuarios`(
+        `nome` varchar(20) NOT NULL,
+        `nickname` varchar(8) NOT NULL,
+        `senha` varchar(100) NOT NULl,
+        PRIMARY KEY (`nickname`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;''')
 
 for tabela_nome in TABLES:
