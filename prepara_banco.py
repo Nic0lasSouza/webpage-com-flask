@@ -32,7 +32,7 @@ cursor.execute("CREATE DATABASE jogoteca;")
 cursor.execute("USE jogoteca;")
 
 #CRIACAO DE TABELAS 
-TABLES = {}
+TABLES = {} 
 
 #DEFINE A TABELA JOGOS COM COLUNAS ID,NOME,CATEGORIA,CONSOLE E O ID AUTO INCREMENTAVEL
 TABLES['jogos']=('''
