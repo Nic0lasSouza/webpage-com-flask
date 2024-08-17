@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, url
 from app import app, db
 from models import Jogos,Usuarios
 from helpers import recupera_imagem
+import time
 
 @app.route('/')
 def index():
@@ -38,8 +39,11 @@ def criar():
 
     arquivo = request.files['arquivo']
     upload_path = app.config['UPLOAD_PATH']
-    arquivo.save(f'{upload_path}/capa{novo_jogo.id}.jpg')
+    timestamp = time.time()
+    arquivo.save(f'{upload_path}/capa{novo_jogo.id}-{timestamp}.jpg')
+    flash('Jogo criado com sucesso')
     return redirect(url_for('index'))
+    
 
 @app.route('/edit/<int:id>')
 def editar(id):
@@ -61,7 +65,9 @@ def atualizar():
 
     arquivo = request.files['arquivo']
     upload_path = app.config['UPLOAD_PATH']
-    arquivo.save(f'{upload_path}/capa{jogo.id}.jpg')
+    timestamp = time.time()
+    arquivo.save(f'{upload_path}/capa{jogo.id}-{timestamp}.jpg')
+    flash('Jogo editado com sucesso')
     return redirect(url_for('index'))
 
 @app.route('/deletar<int:id>')
