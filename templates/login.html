@@ -16,11 +16,13 @@
 
             <h1>Faça seu login</h1>
             <form method="POST" action="{{url_for('autenticar')}}">
-                <input type="hidden" name="proxima" value="{{proxima}}">
+                <input type="hidden" name="proxima" value="{{proxima or url_for('index')}}">
                 <p><label>Nome de usuário: </label><input class="form-control" type="text" name="usuario" required>  </p>
                 <p><label>Nome de usuário: </label><input class="form-control" type="password" name="senha" required>  </p>
-                <p><button class="btn btn-primary" type="submit">Entrar</button></p>
+                <p><button class="btn btn-success" type="submit">Login</button></p>
             </form>
+            <a class= "btn btn-warning" href="{{url_for('index')}}">Voltar</a>
+
         </div>
     </body>
 </html>
