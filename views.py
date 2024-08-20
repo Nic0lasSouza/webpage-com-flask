@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for, send_from_directory
 from app import app, db
 from models import Jogos,Usuarios
-from helpers import recupera_imagem,deleta_arquivo, FormularioJogo
+from helpers import recupera_imagem,deleta_arquivo, FormularioJogo, FormularioUsuario
 import time
 
 @app.route('/')
@@ -95,15 +95,19 @@ def deletar(id):
 
 @app.route('/login')
 def login():
+    form = FormularioUsuario()
     proxima = request.args.get('proxima')
-    return render_template('login.html', proxima=proxima)
+    
+    return render_template('login.html', proxima=proxima, form=form)
 
 @app.route('/autenticar', methods=['POST',])
 def autenticar():
+    form = FormularioUsuario(request.form)
+    
     #AQUI VAI CONFERIR SE O USUARIO QUE VAI SE LOGAR CONSTA NO BANCO
-    usuario = Usuarios.query.filter_by(nickname=request.form['usuario']).first()
+    usuario = Usuarios.query.filter_by(nickname=form.nome.data).first()
     if usuario:
-        if request.form['senha'] == usuario.senha:
+        if form.senha.data == usuario.senha:
             session['usuario_logado'] = usuario.nome
             flash(usuario.nome + ' '+ '  logado com sucesso')
             proxima_pagina = request.form['proxima']
