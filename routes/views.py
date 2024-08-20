@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for, send_from_directory
 from app import app, db
-from models import Jogos,Usuarios
+from db.models import Jogos,Usuarios
 from helpers import recupera_imagem,deleta_arquivo, FormularioJogo, FormularioUsuario
 import time
 
@@ -19,8 +19,9 @@ def index():
 def new():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         return redirect(url_for('login', proxima=url_for('new')))
-    else:
-        return render_template('add_game.html', titulo = 'Novo Jogo')
+    
+    form = FormularioJogo()
+    return render_template('add_game.html', titulo = 'Novo Jogo', form=form)
 
 @app.route('/criar', methods=['POST',])
 def criar():
