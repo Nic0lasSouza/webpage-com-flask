@@ -9,7 +9,8 @@
 
             <table class="table table-striped table-responsive table-bordered">
                 <thead class="thead-default">
-                    <tr>
+                    <tr class="text-center">
+                        <th>Imagem</th>
                         <th>Nome</th>
                         <th>Categoria</th>
                         <th>Console</th>
@@ -19,11 +20,12 @@
                 </thead>
                 <tbody>
                     {% for jogo in jogos%}
-                    <tr>
-                        <td>{{ jogo.nome}}</td>
-                        <td>{{ jogo.categoria}}</td>
-                        <td>{{ jogo.console}}</td>
-                        <td>
+                    <tr >
+                        <td class="text-center align-middle"><img src="{{ url_for('imagem', nome_arquivo=jogo.imagem) }}" alt="Capa do Jogo" width="100" class="img-fluid rounded"></td>
+                        <td  class="text-center align-middle">{{ jogo.nome}}</td>
+                        <td  class="text-center align-middle">{{ jogo.categoria}}</td>
+                        <td  class="text-center align-middle">{{ jogo.console}}</td>
+                        <td class="text-center align-middle">
                             <a class="btn btn-warning" href="{{url_for('editar', id=jogo.id)}}">Editar</a>
                             <a class="btn btn-danger" href="{{url_for('deletar', id=jogo.id)}}">Deletar</a>
                         </td>

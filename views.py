@@ -7,8 +7,13 @@ import time
 @app.route('/')
 def index():
     #PEGAR OS JOGOS E FAZER UMA QUERY, ORDENAR A LISTA PELO ID
-    lista = Jogos.query.order_by(Jogos.id)
-    return render_template('index.html', titulo = 'Jogos', jogos = lista)
+    lista = Jogos.query.order_by(Jogos.id).all()
+
+    for jogo in lista:
+        jogo.imagem = recupera_imagem(jogo.id)
+    
+    return render_template('index.html', titulo = 'Lista de Jogos', jogos = lista)
+
 
 @app.route('/new')
 def new():
