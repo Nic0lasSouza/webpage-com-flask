@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for, send_from_directory
 from app import app, db
-from db.models import Jogos,Usuarios
-from helpers import recupera_imagem,deleta_arquivo, FormularioJogo, FormularioUsuario
+from db.models import Jogos
+from helpers import recupera_imagem,deleta_arquivo, FormularioJogo
 import time
 
 @app.route('/')
@@ -94,40 +94,6 @@ def deletar(id):
     flash('Jogo deletado com sucesso')
     return redirect(url_for('index'))
 
-@app.route('/login')
-def login():
-    form = FormularioUsuario()
-    proxima = request.args.get('proxima')
-    
-    return render_template('login.html', proxima=proxima, form=form)
-
-@app.route('/autenticar', methods=['POST',])
-def autenticar():
-    form = FormularioUsuario(request.form)
-    
-    #AQUI VAI CONFERIR SE O USUARIO QUE VAI SE LOGAR CONSTA NO BANCO
-    usuario = Usuarios.query.filter_by(nickname=form.nome.data).first()
-    if usuario:
-        if form.senha.data == usuario.senha:
-            session['usuario_logado'] = usuario.nome
-            flash(usuario.nome + ' '+ '  logado com sucesso')
-            proxima_pagina = request.form['proxima']
-            return redirect(proxima_pagina)
-
-    #if 'admin' == request.form['senha']:
-    #    session['usuario_logado'] = request.form['usuario']
-    #    flash(session['usuario_logado'] + ' '+ '  logado com sucesso')
-    #    proxima_pagina = request.form['proxima']
-    #   return redirect(proxima_pagina)
-    else:
-        flash('Usuário não logado')
-        return redirect(url_for('login'))
-
-@app.route('/logout')
-def logout():
-    session['usuario_logado'] = None
-    flash('Logout efetuado com sucesso')
-    return redirect(url_for('index'))
 
 @app.route('/uploads/<nome_arquivo>')
 def imagem(nome_arquivo):

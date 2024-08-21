@@ -8,6 +8,7 @@ app.config.from_pyfile('config.py')
 #INSTANCIANDO O DB 
 db = SQLAlchemy(app)
 csrf = CSRFProtect(app)
-from routes.views import *
+from routes.views_games import *
+from routes.views_user import *
 if __name__ == "__main__":
     app.run(debug=True)
