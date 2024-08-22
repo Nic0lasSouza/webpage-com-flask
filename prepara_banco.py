@@ -2,6 +2,8 @@
 
 import mysql.connector
 from mysql.connector import errorcode
+#IMPORTANTO HASH PARA CRIPTOGRAFAR SENHA
+from flask_bcrypt import generate_password_hash
 
 print("Conectando ao banco.....")
 #TENTATIVA DE CONEXÃO COM O BANCO DE DADOS
@@ -75,9 +77,9 @@ for tabela_nome in TABLES:
 #COMANDO SQL PARA INSERIR DADOS NA TABELA USUARIOS
 usuarios_sql = 'INSERT INTO usuarios (nome, nickname, senha) VALUES (%s, %s, %s)'
 usuarios =[
-    ('João', 'joao', '123'),
-    ('Maria', 'maria', '456'),
-    ('Pedro', 'pedro', '789')
+    ('João', 'joao', generate_password_hash('123').decode('utf-8')),
+    ('Maria', 'maria', generate_password_hash('456').decode('utf-8')),
+    ('Pedro', 'pedro', generate_password_hash('789').decode('utf-8'))
 ]
 #EXECUTA O COMANDO SQL PARA CADA USUARIO DA LISTA USUARIOS
 cursor.executemany(usuarios_sql,usuarios)
